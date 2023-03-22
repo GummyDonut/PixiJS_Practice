@@ -1,13 +1,14 @@
 let app;
 
 import {createBasicText} from './components/text.js'
+import preloader from './components/preloader.js'
 
 // load the pixi.js app
-window.onload = function() {
+window.onload = async function() {
     app = new PIXI.Application(
         {
-            width: 800, // possibly change this to height of the app
-            height: 600,
+            width: window.innerWidth, // possibly change this to height of the app
+            height: window.innerHeight,
             backgroundColor: 0xAAAAAA
         }
     )
@@ -25,4 +26,16 @@ window.onload = function() {
     })
 
     app.stage.addChild(basicText);
+
+    let assets = await preloader.load();
+    console.log(assets.logo)
+    const logo = new PIXI.Sprite(assets.logo);;
+
+    logo.anchor.set(0.5);
+    // move the sprite to the center of the screen
+    logo.x = app.screen.width / 2;
+    logo.y = app.screen.height / 2;
+
+    app.stage.addChild(logo)
+
 }
